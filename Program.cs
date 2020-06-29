@@ -6,7 +6,12 @@ namespace Aula27_28_29_30
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Produto p1 = new Produto();
+            p1.Codigo  = 1;
+            p1.Nome    = "Nike Air Max 91";
+            p1.Preco   = 499f;
+
+            p1.Cadastrar(p1);
         }
     }
 }
