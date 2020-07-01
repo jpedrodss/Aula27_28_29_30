@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
 namespace Aula27_28_29_30
 {
     public class Produto
@@ -42,11 +44,38 @@ namespace Aula27_28_29_30
 
                 produtos.Add(prod);
             }
+            
+            produtos = produtos.OrderBy(z => z.Nome).ToList();
+
             return produtos;
         }
 
+        public List<Produto> Filtrar(string _nome){
+            return Ler().FindAll(n => n.Nome == _nome);
+        }
+        public void Remover(string _termo){
+
+            List<string> linhas = new List<string>();
+            
+            using(StreamReader arquivo = new StreamReader(PATH)){
+
+                string linha;
+
+                while((linha = arquivo.ReadLine()) != null ){
+                    linhas.Add(linha);
+                }
+
+                linhas.RemoveAll(z => z.Contains(_termo));
+            }
+
+            using(StreamWriter output = new StreamWriter(PATH)){
+
+                output.Write(String.Join(Environment.NewLine, linhas.ToArray())); 
+
+            }
+        }
         private string PrepararLinha(Produto p){
-            return $"Codigo={p.Codigo};nome={p.Nome};preco={p.Preco}";
+            return $"\nCodigo={p.Codigo};nome={p.Nome};preco={p.Preco}";
         }
     }
 }
