@@ -32,6 +32,41 @@ namespace Aula27_28_29_30
                 }
             }
         }
+        /// <summary>
+        /// Lê as linhas para alteração de produtos
+        /// </summary>
+        /// <param name="linhas">linha que contém informações do produto</param>
+        /// <param name="_termo">Nome, Código ou Preço que será usado para alterar</param>
+        public void LerLinhas(List<string> linhas, string _termo){
+            using (StreamReader arquivo = new StreamReader(PATH))
+            {
+                string linha;
+
+                while ((linha = arquivo.ReadLine()) != null)
+                {
+                    linhas.Add(linha);
+                }
+
+                linhas.RemoveAll(z => z.Contains(_termo));
+            }
+        }
+        /// <summary>
+        /// Lê as linhas para remoção de produtos
+        /// </summary>
+        /// <param name="linhas">linha que contém informações do produto</param>
+        public void LerLinhas(List<string> linhas){
+            using (StreamReader arquivo = new StreamReader(PATH))
+            {
+
+                string linha;
+
+                while ((linha = arquivo.ReadLine()) != null)
+                {
+                    linhas.Add(linha);
+                }
+
+            }
+        }
         public string Separar(string dado){
             return dado.Split('=')[1];
         }
@@ -83,16 +118,7 @@ namespace Aula27_28_29_30
 
             List<string> linhas = new List<string>();
             
-            using(StreamReader arquivo = new StreamReader(PATH)){
-
-                string linha;
-
-                while((linha = arquivo.ReadLine()) != null ){
-                    linhas.Add(linha);
-                }
-
-                linhas.RemoveAll(z => z.Contains(_termo));
-            }
+            LerLinhas(linhas, _termo);
 
             ReescreverCSV(linhas);
 
@@ -102,16 +128,10 @@ namespace Aula27_28_29_30
         /// </summary>
         /// <param name="_produtoAlterado">Objeto de produto</param>
         public void Alterar(Produto _produtoAlterado){
+
             List<string> linhas = new List<string>();
 
-            using (StreamReader arquivo = new StreamReader(PATH))
-            {
-                string linha;
-                while ((linha = arquivo.ReadLine()) != null)
-                {
-                    linhas.Add(linha);
-                }
-            }
+            LerLinhas(linhas);
 
             linhas.RemoveAll(z => z.Split(";")[0].Contains(_produtoAlterado.Codigo.ToString()));
 

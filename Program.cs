@@ -13,14 +13,14 @@ namespace Aula27_28_29_30
             p1.Preco   = 1799f;
 
             p1.Cadastrar(p1);
-            // p1.Remover("1499");
+            // p1.Remover("GTX 1660 OC");
 
             Produto alterado = new Produto();
             alterado.Codigo  = 4;
-            alterado.Nome    = "GTX 1660 SUPER";
+            alterado.Nome    = "GTX 1660 OC";
             alterado.Preco   = 1799f;
 
-            // p1.Alterar(alterado);
+            p1.Alterar(alterado);
 
             List<Produto> lista = p1.Ler();
 
