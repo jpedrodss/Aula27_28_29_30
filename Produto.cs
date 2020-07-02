@@ -5,23 +5,35 @@ using System.Linq;
 
 namespace Aula27_28_29_30
 {
-    public class Produto
+    public class Produto : IProduto
     {
         public int Codigo { get; set; }
         public string Nome { get; set; }
         public float Preco { get; set; }
-
         private const string PATH = "Database/produto.csv";
-
-        public string Separar(string dado){
-            return dado.Split('=')[1];
-        }
+        
         public Produto(){
             // Cria o arquivo caso não exista
             if(!File.Exists(PATH)){
                 Directory.CreateDirectory("Database");
                 File.Create(PATH).Close();
             }
+        }
+        /// <summary>
+        /// Reescreve uma linha dentro da lista 
+        /// </summary>
+        /// <param name="linhas">linha que contém informações do produto</param>
+        public void ReescreverCSV(List<string> linhas){
+            using (StreamWriter output = new StreamWriter(PATH))
+            {
+                foreach (string ln in linhas)
+                {
+                    output.Write(ln + "\n");
+                }
+            }
+        }
+        public string Separar(string dado){
+            return dado.Split('=')[1];
         }
         /// <summary>
         /// Cadastra um produto
@@ -82,13 +94,8 @@ namespace Aula27_28_29_30
                 linhas.RemoveAll(z => z.Contains(_termo));
             }
 
-            using(StreamWriter output = new StreamWriter(PATH)){
-                
-                foreach (string ln in linhas)
-                {
-                    output.Write(ln + "\n");
-                }
-            }
+            ReescreverCSV(linhas);
+
         }
         /// <summary>
         /// Altera um produto
@@ -110,17 +117,12 @@ namespace Aula27_28_29_30
 
             linhas.Add(PrepararLinha(_produtoAlterado));
 
-            using (StreamWriter output = new StreamWriter(PATH)){
-
-                foreach (string ln in linhas)
-                {
-                    output.Write(ln + "\n");
-                }
-            }
+            ReescreverCSV(linhas);
 
         }
         private string PrepararLinha(Produto p){
             return $"Codigo={p.Codigo};nome={p.Nome};preco={p.Preco}";
         }
+
     }
 }
